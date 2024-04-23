@@ -63,11 +63,13 @@ void UrusanIoT::penangkapPesan(MQTTClientCallbackSimpleFunction penangkapPesan){
 /// @param topic 
 /// @param message 
 void UrusanIoT::publish(String topic, String message){
+  Serial.printf("UrusanIoT: Mempublish pesan: %s ,ke topik: %s.\n", message.c_str(), topic.c_str());
   client.publish(topic.c_str(), message.c_str());
 }
 
 /// @brief Subscribe topik dari broker
 /// @param topic 
 void UrusanIoT::subscribe(String topic){
+  Serial.printf("UrusanIoT: Mensubsribe topik: %s.\n", topic.c_str());
   client.subscribe(topic.c_str());
 }
