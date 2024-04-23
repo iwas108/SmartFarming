@@ -1,18 +1,16 @@
 #include <Arduino.h>
+#include <UrusanWiFi.h>
+#include "secret.h"
 
-// put function declarations here:
-int myFunction(int, int);
+UrusanWiFi urusanWiFi(ssid, pass);
 
 void setup() {
   // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+  Serial.begin(115200);
+
+  urusanWiFi.konek();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-}
-
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
 }
