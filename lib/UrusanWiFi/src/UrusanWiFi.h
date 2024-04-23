@@ -13,7 +13,7 @@ public:
 
   // Methods provided by your UrusanWiFi library (replace with actual functions)
   void konek();
-  String apakahKonek();
+  bool apakahKonek();
   // Add other relevant methods from your UrusanWiFi library
 
 private:

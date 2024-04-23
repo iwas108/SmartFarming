@@ -4,7 +4,7 @@ UrusanWiFi::UrusanWiFi(const char* ssid, const char* pass) : _ssid(ssid), _pass(
 UrusanWiFi::UrusanWiFi(const char* ssid) : _ssid(ssid) {}
 
 void UrusanWiFi::konek() {
-  Serial.printf("UrusanWiFi: Mencoba konek ke %s... \n", _ssid);
+  Serial.printf("UrusanWiFi: Mencoba konek ke %s...\n", _ssid);
   
   if(_pass != nullptr){
     WiFi.begin(_ssid, _pass);
@@ -16,19 +16,22 @@ void UrusanWiFi::konek() {
   WiFi.onEvent([this](WiFiEvent_t event, WiFiEventInfo_t info){
     this->onWiFiEvent(event, info);
   });
+
+  unsigned long timer = millis();
+  while(WiFi.status() != WL_CONNECTED){
+    delay(100);
+
+    if(millis() - timer > 10000){break;}
+  }
 }
 
 /// @brief Cek apakah WiFinya konek.
-/// @return "konek", "putus", "bermasalah"
-String UrusanWiFi::apakahKonek() {
-  if (WiFi.isConnected() == WL_CONNECTED){
-    return "konek";
-  }
-  else if(WiFi.isConnected() == WL_DISCONNECTED){
-    return "putus";
-  }
-  else {
-    return "bermasalah";
+/// @return 1 jika konek, 0 jika putus
+bool UrusanWiFi::apakahKonek() {
+  if (WiFi.status() == WL_CONNECTED){
+    return 1;
+  }else{
+    return 0;
   }
 
 }
