@@ -1,11 +1,18 @@
 #include "UrusanIoT.h"
 
+/// @brief Objek untuk membuat koneksi ke IoT Broker.
+/// @param broker 
+/// @param port 
+/// @param clientId 
+/// @param brokerUsername 
+/// @param brokerPassword 
 UrusanIoT::UrusanIoT(const char* broker, const int port, const char* clientId, 
     const char* brokerUsername, const char* brokerPassword) : _broker(broker),
      _port(port), _clientId(clientId), _brokerUsername(brokerUsername), _brokerPassword(brokerPassword) {
     
 }
 
+/// @brief Konek ke MQTT Broker
 void UrusanIoT::konek(){
     if(WiFi.status() != WL_CONNECTED){
       Serial.printf("UrusanIoT: Tidak ada koneksi!\n");
@@ -40,7 +47,27 @@ bool UrusanIoT::apakahKonek() {
   }
 }
 
+/// @brief Panggil fungsi ini agar mesin IoT berjalan.
 void UrusanIoT::proses(){
   client.loop();
   delay(10);
+}
+
+/// @brief Fungsi penangkap pesan masuk dari IoT
+/// @param penangkapPesan
+void UrusanIoT::penangkapPesan(MQTTClientCallbackSimpleFunction penangkapPesan){
+  client.onMessage(penangkapPesan);
+}
+
+/// @brief Kirim pesan ke broker
+/// @param topic 
+/// @param message 
+void UrusanIoT::publish(String topic, String message){
+  client.publish(topic.c_str(), message.c_str());
+}
+
+/// @brief Subscribe topik dari broker
+/// @param topic 
+void UrusanIoT::subscribe(String topic){
+  client.subscribe(topic.c_str());
 }

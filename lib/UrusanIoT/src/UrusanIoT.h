@@ -11,6 +11,9 @@ class UrusanIoT {
         void konek();
         bool apakahKonek();
         void proses();
+        void penangkapPesan(MQTTClientCallbackSimpleFunction penangkapPesan);
+        void subscribe(String topic);
+        void publish(String topic, String message);
 
     private:
         const char* _broker;
