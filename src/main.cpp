@@ -1,15 +1,21 @@
 #include <Arduino.h>
+#include <Wire.h>
+#include <SPI.h>
 #include <MQTT.h>
 #include <UrusanWiFi.h>
 #include <UrusanIoT.h>
 #include "secret.h"
 #include <TaskScheduler.h>
+#include <UrusanSensorLingkungan.h>
+#include <ArduinoJson.h>
+
 
 void penangkapPesan(String topic, String message);
 void task1DetailTugas();
 
 UrusanWiFi urusanWiFi(ssid, pass);
 UrusanIoT urusanIoT(broker, port, id, brokerUsername, brokerPassword);
+UrusanSensorLingkungan urusanSensorLingkungan;
 Scheduler penjadwal;
 
 Task task1(3000, TASK_FOREVER, &task1DetailTugas);
@@ -21,7 +27,9 @@ void setup() {
   urusanWiFi.konek();
   urusanIoT.konek();
   urusanIoT.penangkapPesan(penangkapPesan);
-  urusanIoT.subscribe("tld/namaorganisasi/namadivisi");
+  urusanIoT.subscribe("tld/namaorganisasi/namadivisi/setelan");
+
+  urusanSensorLingkungan.mulai();
 
   penjadwal.init();
   penjadwal.addTask(task1);
@@ -32,7 +40,7 @@ void loop() {
   // put your main code here, to run repeatedly:
   urusanIoT.proses();
 
-  if(urusanWiFi.apakahKonek() == 1 && urusanIoT.apakahKonek() == 0){
+  if(urusanWiFi.apakahKonek() == true && urusanIoT.apakahKonek() == false){
     urusanIoT.konek();
   }
 
@@ -44,7 +52,20 @@ void penangkapPesan(String topic, String message){
 }
 
 void task1DetailTugas(){
-  if(urusanIoT.apakahKonek() == 1){
-    urusanIoT.publish("tld/namaorganisasi", "namadivisi");
+  if(urusanIoT.apakahKonek() == true){
+    if(urusanSensorLingkungan.apakahSensorSiap() == true){
+      float suhu = urusanSensorLingkungan.bacaSuhu();
+      float kelembapan = urusanSensorLingkungan.bacaKelembapan();
+
+      JsonDocument data;
+      char muatan[512];
+
+      data["suhu"] = suhu;
+      data["kelembapan"] = kelembapan;
+
+      serializeJson(data, muatan);
+
+      urusanIoT.publish("tld/namaorganisasi/namadivisi", muatan);
+    }
   }
 }

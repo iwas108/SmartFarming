@@ -70,6 +70,6 @@ void UrusanIoT::publish(String topic, String message){
 /// @brief Subscribe topik dari broker
 /// @param topic 
 void UrusanIoT::subscribe(String topic){
-  Serial.printf("UrusanIoT: Mensubsribe topik: %s.\n", topic.c_str());
+  Serial.printf("UrusanIoT: Mensubscribe topik: %s.\n", topic.c_str());
   client.subscribe(topic.c_str());
 }
