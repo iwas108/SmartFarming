@@ -1,23 +1,26 @@
 #include <Arduino.h>
+#include <Wire.h>
 #include <MQTT.h>
 #include <UrusanWiFi.h>
 #include <UrusanIoT.h>
 #include "secret.h"
 #include <TaskScheduler.h>
-#include <UrusanAktuatorReservoir.h>
+#include <UrusanLayar.h>
 #include <ArduinoJson.h>
 
 
 void penangkapPesan(String topic, String message);
 void task1DetailTugas();
+void task2DetailTugas();
 void subscribeTopik();
 
 UrusanWiFi urusanWiFi(ssid, pass);
 UrusanIoT urusanIoT(broker, port, id, brokerUsername, brokerPassword);
-UrusanAktuatorReservoir urusanAktuatorReservoir(32);
+UrusanLayar urusanLayar;
 Scheduler penjadwal;
 
 Task task1(3000, TASK_FOREVER, &task1DetailTugas);
+Task task2(5000, TASK_FOREVER, &task2DetailTugas);
 
 void setup() {
   // put your setup code here, to run once:
@@ -31,11 +34,13 @@ void setup() {
     subscribeTopik();
   }
 
-  urusanAktuatorReservoir.mulai();
+  urusanLayar.mulai();
 
   penjadwal.init();
   penjadwal.addTask(task1);
+  penjadwal.addTask(task2);
   task1.enable();
+  task2.enable();
 }
 
 void loop() {
@@ -65,12 +70,7 @@ void penangkapPesan(String topic, String message){
     if(dataMasuk["perintah"] != nullptr){
       String perintah = dataMasuk["perintah"].as<String>();
 
-      if(perintah == String("nyalakan")){
-        urusanAktuatorReservoir.nyalakan();
-      }
-      else if(perintah == String("padamkan")){
-        urusanAktuatorReservoir.padamkan();
-      }
+      
     }
     
   }
@@ -83,12 +83,34 @@ void task1DetailTugas(){
   if(urusanIoT.apakahKonek() == true){
     JsonDocument data;
     char muatan[512];
-
-    data["status"] = urusanAktuatorReservoir.bacaStatus();
-
+    //...
     serializeJson(data, muatan);
-
     urusanIoT.publish("tld/namaorganisasi/namadivisi", muatan);
   
+  }
+}
+
+
+uint8_t nomorSlider = 1;
+uint8_t jumlahSlider = 4;
+void task2DetailTugas(){
+  if(nomorSlider == 1){
+    urusanLayar.updateTemperatureAndHumidity(29, 80);
+  }
+  else if(nomorSlider == 2){
+    urusanLayar.updateFanStatus(100, 1);
+  }
+  else if(nomorSlider == 3){
+    urusanLayar.updateWaterReservoir(80);
+  }
+  else if(nomorSlider == 4){
+    urusanLayar.updatePumpStatus(1);
+  }   
+
+
+  if(nomorSlider == jumlahSlider){
+    nomorSlider = 1;
+  }else{
+    nomorSlider++;
   }
 }
