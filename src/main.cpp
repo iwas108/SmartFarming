@@ -12,6 +12,7 @@
 
 void penangkapPesan(String topic, String message);
 void task1DetailTugas();
+void subscribeTopik();
 
 UrusanWiFi urusanWiFi(ssid, pass);
 UrusanIoT urusanIoT(broker, port, id, brokerUsername, brokerPassword);
@@ -36,7 +37,9 @@ void setup() {
   }
   
   urusanIoT.penangkapPesan(penangkapPesan);
-  urusanIoT.subscribe("tld/namaorganisasi/namadivisi/setelan");
+  if(urusanIoT.apakahKonek() == 1){
+    subscribeTopik();
+  }
 
   urusanSensorLingkungan.mulai();
 
@@ -51,9 +54,16 @@ void loop() {
 
   if(urusanWiFi.apakahKonek() == true && urusanIoT.apakahKonek() == false){
     urusanIoT.konek();
+    if(urusanIoT.apakahKonek() == 1){
+      subscribeTopik();
+    }
   }
 
   penjadwal.execute();
+}
+
+void subscribeTopik(){
+  urusanIoT.subscribe("tld/namaorganisasi/namadivisi/setelan");
 }
 
 void penangkapPesan(String topic, String message){
