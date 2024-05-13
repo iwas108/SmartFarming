@@ -14,7 +14,7 @@ void UrusanLayar::mulai() {
         while(1);
     }
     display.clearDisplay();
-    display.setTextSize(3);
+    display.setTextSize(1);
     display.setTextColor(SSD1306_WHITE);
     display.setCursor(0, 0);
     display.display();
