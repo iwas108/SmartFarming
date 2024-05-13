@@ -1,6 +1,4 @@
 #include <Arduino.h>
-#include <Wire.h>
-#include <SPI.h>
 #include <MQTT.h>
 #include <UrusanWiFi.h>
 #include <UrusanIoT.h>
