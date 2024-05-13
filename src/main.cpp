@@ -6,7 +6,7 @@
 #include <UrusanIoT.h>
 #include "secret.h"
 #include <TaskScheduler.h>
-#include <UrusanSensorLingkungan.h>
+#include <UrusanSensorReservoirLevel.h>
 #include <ArduinoJson.h>
 
 
@@ -15,7 +15,7 @@ void task1DetailTugas();
 
 UrusanWiFi urusanWiFi(ssid, pass);
 UrusanIoT urusanIoT(broker, port, id, brokerUsername, brokerPassword);
-UrusanSensorLingkungan urusanSensorLingkungan;
+UrusanSensorReservoirLevel urusanSensorReservoirLevel(100.0, 33, 34); //tinggi reservoir, pin trigger, pin echo
 Scheduler penjadwal;
 
 Task task1(3000, TASK_FOREVER, &task1DetailTugas);
@@ -25,11 +25,19 @@ void setup() {
   Serial.begin(115200);
 
   urusanWiFi.konek();
+  while(urusanWiFi.apakahKonek() == 0){
+    Serial.print(".");
+    delay(1000);
+  }
   urusanIoT.konek();
+  while(urusanIoT.apakahKonek() == 0){
+    Serial.print(".");
+    delay(1000);
+  }
   urusanIoT.penangkapPesan(penangkapPesan);
   urusanIoT.subscribe("tld/namaorganisasi/namadivisi/setelan");
 
-  urusanSensorLingkungan.mulai();
+  urusanSensorReservoirLevel.mulai();
 
   penjadwal.init();
   penjadwal.addTask(task1);
@@ -53,15 +61,15 @@ void penangkapPesan(String topic, String message){
 
 void task1DetailTugas(){
   if(urusanIoT.apakahKonek() == true){
-    if(urusanSensorLingkungan.apakahSensorSiap() == true){
-      float suhu = urusanSensorLingkungan.bacaSuhu();
-      float kelembapan = urusanSensorLingkungan.bacaKelembapan();
+    if(urusanSensorReservoirLevel.apakahSensorSiap() == true){
+      float jarak = urusanSensorReservoirLevel.bacaJarak();
+      float level = urusanSensorReservoirLevel.bacaLevel(jarak);
 
       JsonDocument data;
       char muatan[512];
 
-      data["suhu"] = suhu;
-      data["kelembapan"] = kelembapan;
+      data["jarak"] = jarak;
+      data["level"] = level;
 
       serializeJson(data, muatan);
 
