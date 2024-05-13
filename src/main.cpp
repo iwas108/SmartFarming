@@ -4,7 +4,7 @@
 #include <UrusanIoT.h>
 #include "secret.h"
 #include <TaskScheduler.h>
-#include <UrusanAktuatorLingkungan.h>
+#include <UrusanAktuatorReservoir.h>
 #include <ArduinoJson.h>
 
 
@@ -14,7 +14,7 @@ void subscribeTopik();
 
 UrusanWiFi urusanWiFi(ssid, pass);
 UrusanIoT urusanIoT(broker, port, id, brokerUsername, brokerPassword);
-UrusanAktuatorLingkungan urusanAktuatorLingkungan(32, 33);
+UrusanAktuatorReservoir urusanAktuatorReservoir(32);
 Scheduler penjadwal;
 
 Task task1(3000, TASK_FOREVER, &task1DetailTugas);
@@ -31,7 +31,7 @@ void setup() {
     subscribeTopik();
   }
 
-  urusanAktuatorLingkungan.mulai();
+  urusanAktuatorReservoir.mulai();
 
   penjadwal.init();
   penjadwal.addTask(task1);
@@ -66,20 +66,10 @@ void penangkapPesan(String topic, String message){
       String perintah = dataMasuk["perintah"].as<String>();
 
       if(perintah == String("nyalakan")){
-        if( dataMasuk["arah"] != nullptr && dataMasuk["kekuatan"] != nullptr){
-          bool arah = dataMasuk["arah"].as<bool>();
-          uint8_t kekuatan = dataMasuk["kekuatan"].as<uint8_t>();
-          urusanAktuatorLingkungan.nyalakan(kekuatan, arah);
-        }
-      }
-      else if(perintah == String("anginTopan")){
-        if( dataMasuk["arah"] != nullptr){
-          bool arah = dataMasuk["arah"].as<bool>();
-          urusanAktuatorLingkungan.anginTopan(arah);
-        }
+        urusanAktuatorReservoir.nyalakan();
       }
       else if(perintah == String("padamkan")){
-        urusanAktuatorLingkungan.padamkan();
+        urusanAktuatorReservoir.padamkan();
       }
     }
     
@@ -94,8 +84,7 @@ void task1DetailTugas(){
     JsonDocument data;
     char muatan[512];
 
-    data["arah"] = urusanAktuatorLingkungan.bacaArah();
-    data["kekuatan"] = urusanAktuatorLingkungan.bacaKekuatan();
+    data["status"] = urusanAktuatorReservoir.bacaStatus();
 
     serializeJson(data, muatan);
 
