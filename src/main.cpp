@@ -26,17 +26,11 @@ void setup() {
   Serial.begin(115200);
 
   urusanWiFi.konek();
-  while(urusanWiFi.apakahKonek() == 0){
-    Serial.print(".");
-    delay(1000);
-  }
   urusanIoT.konek();
-  while(urusanIoT.apakahKonek() == 0){
-    Serial.print(".");
-    delay(1000);
-  }
   urusanIoT.penangkapPesan(penangkapPesan);
-  urusanIoT.subscribe("tld/namaorganisasi/namadivisi/setelan");
+  if(urusanIoT.apakahKonek() == 1){
+    subscribeTopik();
+  }
 
   urusanSensorReservoirLevel.mulai();
 
