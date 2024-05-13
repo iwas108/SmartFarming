@@ -72,6 +72,12 @@ void penangkapPesan(String topic, String message){
 
       
     }
+
+    if(dataMasuk["suhu"] != nullptr && dataMasuk["kelembapan"] != nullptr){
+      float suhu = dataMasuk["suhu"].as<float>();
+      float kelembapan = dataMasuk["kelembapan"].as<float>();
+      urusanLayar.updateTemperatureAndHumidity(suhu, kelembapan);
+    }
     
   }
   else{
