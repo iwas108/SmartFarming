@@ -14,7 +14,7 @@ void UrusanLayar::mulai() {
         while(1);
     }
     display.clearDisplay();
-    display.setTextSize(1);
+    display.setTextSize(3);
     display.setTextColor(SSD1306_WHITE);
     display.setCursor(0, 0);
     display.display();
@@ -23,9 +23,10 @@ void UrusanLayar::mulai() {
 void UrusanLayar::updateTemperatureAndHumidity(float temperature, float humidity) {
     display.clearDisplay();
     display.setCursor(0, 0);
-    display.println("Temperature:");
-    display.println(temperature, 1); // One decimal place for temperature
-    display.print("C   Humidity: ");
+    display.print("Suhu:");
+    display.print(temperature, 1); // One decimal place for temperature
+    display.println("°C");
+    display.print("Kelembapan:");
     display.print(humidity, 1); // One decimal place for humidity
     display.println("%");
     display.display();
@@ -34,10 +35,10 @@ void UrusanLayar::updateTemperatureAndHumidity(float temperature, float humidity
 void UrusanLayar::updateFanStatus(int speed, bool isUpDirection) {
     display.clearDisplay();
     display.setCursor(0, 0);
-    display.println("Fan Speed:");
+    display.print("Kec. Kipas: ");
     display.print(speed);
     display.println("%");
-    display.print("Direction: ");
+    display.print("Arah: ");
     display.println(isUpDirection ? "Up" : "Down");
     display.display();
 }
@@ -45,7 +46,7 @@ void UrusanLayar::updateFanStatus(int speed, bool isUpDirection) {
 void UrusanLayar::updateWaterReservoir(float level) {
     display.clearDisplay();
     display.setCursor(0, 0);
-    display.println("Water Reservoir:");
+    display.print("Level Air: ");
     display.print(level);
     display.println("%");
     display.display();
@@ -54,7 +55,7 @@ void UrusanLayar::updateWaterReservoir(float level) {
 void UrusanLayar::updatePumpStatus(bool isOn) {
     display.clearDisplay();
     display.setCursor(0, 0);
-    display.println("Pump Status:");
+    display.print("Status Pompa: ");
     display.println(isOn ? "ON" : "OFF");
     display.display();
 }
