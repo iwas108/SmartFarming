@@ -96,6 +96,7 @@ void task1DetailTugas(){
 
     data["arah"] = urusanAktuatorLingkungan.bacaArah();
     data["kekuatan"] = urusanAktuatorLingkungan.bacaKekuatan();
+    data["status"] = urusanAktuatorLingkungan.bacaStatus();
 
     serializeJson(data, muatan);
 

@@ -12,6 +12,7 @@ void UrusanAktuatorLingkungan::mulai(){
 void UrusanAktuatorLingkungan::nyalakan(uint8_t kekuatan, bool arah){
     _kekuatan = kekuatan;
     _arah = arah;
+    _status = 1;
     uint8_t power = map(kekuatan, 0, 100, 80, 100);
     Serial.printf("UrusanAktuatorLingkungan: Mengaktifkan blower dengan kekuatan: %d%% (%dpwm)\n", kekuatan, power);
     if(arah){
@@ -24,11 +25,12 @@ void UrusanAktuatorLingkungan::nyalakan(uint8_t kekuatan, bool arah){
 }
 
 void UrusanAktuatorLingkungan::padamkan(){
+    _status = 0;
     ledcWrite(0, 0);
     ledcWrite(1, 0);
 }
 
-float UrusanAktuatorLingkungan::bacaArah(){
+bool UrusanAktuatorLingkungan::bacaArah(){
     return _arah;
 }
 
@@ -36,9 +38,14 @@ float UrusanAktuatorLingkungan::bacaKekuatan(){
     return _kekuatan;
 }
 
+bool UrusanAktuatorLingkungan::bacaStatus(){
+    return _status;
+}
+
 void UrusanAktuatorLingkungan::anginTopan(bool arah){
     _kekuatan = 10000;
     _arah = arah;
+    _status = 1;
     Serial.printf("UrusanAktuatorLingkungan: AWAS! Mode angin topan diaktifkan dalam: ");
     for(uint8_t hitungMundur = 10; hitungMundur > 0; hitungMundur--){
         Serial.printf("%d...", hitungMundur);
