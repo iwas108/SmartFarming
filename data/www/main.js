@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             var arah = parseInt(data.arah);
             var kekuatan = parseInt(data.kekuatan);
-            var status = parseInt(data.status);
+            var status = data.status;
 
             divStatusBlower = document.getElementById("statusBlower");
             divArahBlower = document.getElementById("arahBlower");
@@ -77,7 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if(message.destinationName == "namaperusahaan.tld/namadivisi4"){
             var data = JSON.parse(message.payloadString);
 
-            var status = parseInt(data.status);
+            var status = data.status;
+            console.log(status);
 
             divStatusPompaFertigasi = document.getElementById("statusPompaFertigasi");
             divStatusPompaFertigasi.innerHTML = status ? "Pompa ON" : "Pompa OFF";
