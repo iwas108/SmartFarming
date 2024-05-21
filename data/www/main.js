@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Buat instan client: alamat Broker, Port, Websocket Path, Client ID
     var klienIdUnik = "gantinamaperusahaan.tld-gantinamadivisi-browser" + generateRandomString(5);
-    client = new Paho.MQTT.Client("broker.hivemq.com", Number(8000), "/mqtt", "gantinamaperusahaan.tld-gantinamadivisi-browser");
+    client = new Paho.MQTT.Client("broker.hivemq.com", Number(8000), "/mqtt", klienIdUnik);
 
     // setel penangkap panggilan balik
     client.onConnectionLost = function (responseObject) {
