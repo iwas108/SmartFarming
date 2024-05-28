@@ -38,7 +38,22 @@ document.addEventListener('DOMContentLoaded', function() {
             divKelembapan.innerHTML = kelembapan;
         }  
 
-        //Penangan Pesan MAA
+        //Penangan Pesan MAA    
+        if(message.destinationName == "namaperusahaan.tld/namadivisi2/setelan"){
+            divStatusBlower = document.getElementById("statusBlower");
+            divArahBlower = document.getElementById("arahBlower");
+            divSliderKekuatanBlower = document.getElementById("sliderKekuatanBlower");
+
+            var data = JSON.parse(message.payloadString);
+            console.log(data.perintah);
+            if(data.perintah != null && data.perintah == "setKekuatan"){
+                divSliderKekuatanBlower.value = data.kekuatan;
+            }
+
+            else if(data.perintah != null && data.perintah == "setArah"){
+                divArahBlower.value = data.arah;
+            }
+        }    
         if(message.destinationName == "namaperusahaan.tld/namadivisi2"){
             var data = JSON.parse(message.payloadString);
             
