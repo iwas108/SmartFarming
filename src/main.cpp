@@ -89,7 +89,7 @@ void penangkapPesan(String topic, String message){
       }
       else if(perintah == String("setKekuatan")){
         if(dataMasuk["kekuatan"] != nullptr){
-          bool kekuatan = dataMasuk["kekuatan"].as<uint8_t>();
+          uint8_t kekuatan = dataMasuk["kekuatan"].as<uint8_t>();
           urusanAktuatorLingkungan.setKekuatan(kekuatan);
         }
       }
