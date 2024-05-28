@@ -42,6 +42,14 @@ bool UrusanAktuatorLingkungan::bacaStatus(){
     return _status;
 }
 
+void UrusanAktuatorLingkungan::setArah(bool arah){
+    _arah = arah;
+}
+
+void UrusanAktuatorLingkungan::setKekuatan(uint8_t kekuatan){
+    _kekuatan = kekuatan;
+}
+
 void UrusanAktuatorLingkungan::anginTopan(bool arah){
     _kekuatan = 10000;
     _arah = arah;

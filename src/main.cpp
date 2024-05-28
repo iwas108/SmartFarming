@@ -81,6 +81,12 @@ void penangkapPesan(String topic, String message){
       else if(perintah == String("padamkan")){
         urusanAktuatorLingkungan.padamkan();
       }
+      else if(perintah == String("setArah")){
+        bool arah = dataMasuk["setArah"].as<bool>();
+      }
+      else if(perintah == String("setKekuatan")){
+        bool arah = dataMasuk["setKekuatan"].as<uint8_t>();
+      }
     }
     
   }
