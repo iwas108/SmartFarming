@@ -133,8 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById("sliderKekuatanBlower").addEventListener("change", function() {
         // Code to handle the change event for Slider 1
-        console.log("Slider 1 changed");
-        socket.send('{"slider":1,"brightness":'+this.value+'}');
+        console.log("Kekuatan blower diset ke: " + this.value);
     });
 
     function setWaterLevel(level) {
