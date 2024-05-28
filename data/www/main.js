@@ -134,6 +134,21 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("sliderKekuatanBlower").addEventListener("change", function() {
         // Code to handle the change event for Slider 1
         console.log("Kekuatan blower diset ke: " + this.value);
+        var perintah = {
+            "perintah": "setKekuatan",
+            "kekuatan": this.value
+        }
+        kirimPesan(perintah, "namaperusahaan.tld/namadivisi2/setelan");
+    });
+
+    document.getElementById("arahBlower").addEventListener("change", function() {
+        // Code to handle the change event for Slider 1
+        console.log("Arah blower diset ke: " + this.value);
+        var perintah = {
+            "perintah": "setKekuatan",
+            "arah": this.value
+        }
+        kirimPesan(perintah, "namaperusahaan.tld/namadivisi2/setelan");
     });
 
     function setWaterLevel(level) {
