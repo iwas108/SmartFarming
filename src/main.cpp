@@ -82,10 +82,16 @@ void penangkapPesan(String topic, String message){
         urusanAktuatorLingkungan.padamkan();
       }
       else if(perintah == String("setArah")){
-        bool arah = dataMasuk["setArah"].as<bool>();
+        if(dataMasuk["arah"] != nullptr){
+          bool arah = dataMasuk["arah"].as<bool>();
+          urusanAktuatorLingkungan.setArah(arah);
+        }
       }
       else if(perintah == String("setKekuatan")){
-        bool arah = dataMasuk["setKekuatan"].as<uint8_t>();
+        if(dataMasuk["kekuatan"] != nullptr){
+          bool kekuatan = dataMasuk["kekuatan"].as<uint8_t>();
+          urusanAktuatorLingkungan.setKekuatan(kekuatan);
+        }
       }
     }
     
